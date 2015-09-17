@@ -2,7 +2,7 @@
 
 # Update APT and install git
 sudo apt-get -y update
-sudo apt-get -y install git
+sudo apt-get -y install git curl
 
 # Install Postgres
 sudo /usr/sbin/update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
@@ -26,4 +26,12 @@ else
 	sudo -Hu postgres createuser vagrant
 	sudo -Hu postgres psql -f altervagrant.sql
 fi	
+
+# Create DB as vagrant user
+
+sudo cat << EOF > createdb.sql
+create database sampledb;
+EOF
+
+sudo -Hu postgres psql -f createdb.sql
 
