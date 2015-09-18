@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 
 # Update APT and install git
 sudo apt-get -y update
@@ -17,15 +17,18 @@ EOF
 
 bundle install
 
+if [ -d /railsapp ] && [ -f /railsapp/config.ru ] ; then
+	echo "App dir already exists and server appears to be running, setup has already been done"
+else
+	# Set up the dir for the rails app
+	sudo mkdir /railsapp
+	sudo chown vagrant:vagrant /railsapp
 
-# Set up the dir for the rails app
-sudo mkdir /railsapp
-sudo chown vagrant:vagrant /railsapp
-cd /railsapp
+	# Init the rails app
+	rails new /railsapp
+	# Run the server, bind to the 0.0.0.0, so that it is visible from everywhere
+	cd /railsapp
+	rails server -d -b 0.0.0.0
+	echo "Server set up and running. Please point your browser to http://localhost:3000"
+fi
 
-# Init the rails app
-rails new /railsapp
-# Run the server
-rails s &
-
-echo "Current end of provisioning script. If you got here, it's all over"
