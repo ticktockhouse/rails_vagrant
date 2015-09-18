@@ -2,7 +2,7 @@
 
 # Update APT and install git
 sudo apt-get -y update
-sudo apt-get -y install git curl
+sudo apt-get -y install git curl nodejs libsqlite3-dev 
 
 # Install Postgres
 sudo /usr/sbin/update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
@@ -19,7 +19,7 @@ EOF
 
 # If this file exists, we don't need to do the DB init stuff (idempotency)
 if [ -f /usr/local/pgsql/data/pg_hba.conf ] ; then
-	echo "DB already created"
+	echo "DB already initialised"
 # Otherwise, do the DB init stuff
 else
 	sudo -Hu postgres /usr/lib/postgresql/9.3/bin/initdb -D /usr/local/pgsql/data
@@ -35,3 +35,11 @@ EOF
 
 sudo -Hu postgres psql -f createdb.sql
 
+#\curl -sSL https://get.rvm.io | bash
+#usermod -G rvm -a vagrant
+#rvm install 1.9.3
+#rvm install 2.1
+#rvm use 2.1 --default
+#gem install bundler
+
+echo "Current end of provisioning script. If you got here, it's all over"
